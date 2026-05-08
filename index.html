@@ -18,11 +18,10 @@
   font-family:-apple-system,sans-serif;
   box-shadow:0 2px 20px rgba(16,217,138,.5)
 }
-/* hidden when body has js-ready AND ls-ok classes */
-body.js-ready.ls-ok #safari-banner{display:none}
-/* push content below banner when it's visible */
-body:not(.js-ready) #home,
-body.js-ready:not(.ls-ok) #home{padding-top:160px}
+/* hide banner as soon as JS runs — on https:// this is immediate */
+body.js-ready #safari-banner{display:none}
+/* push content below banner only when JS hasn't run yet (QuickLook) */
+body:not(.js-ready) #home{padding-top:160px}
 :root{
   --bg:#0a0e1a;--surface:#111827;--card:#1a2235;--border:#243050;
   --green:#10d98a;--green-dim:#0a8a57;--green-glow:rgba(16,217,138,.18);
