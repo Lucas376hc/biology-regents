@@ -704,6 +704,46 @@ body:not(.js-ready) #home    { padding-top: 100px }
 }
 
 /* ============================================================
+   VISUAL DIAGRAM CARDS (injected by renderLearn)
+   ============================================================ */
+.visual-card {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: var(--shadow-sm);
+}
+.visual-card-header {
+  background: rgba(15,206,129,.08);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.visual-card-label {
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--green);
+}
+.visual-svg-wrap {
+  padding: 12px;
+  background: var(--surface);
+}
+.visual-svg-wrap svg {
+  width: 100%; height: auto;
+  display: block;
+  border-radius: var(--r-sm);
+}
+.visual-caption {
+  padding: 10px 14px 13px;
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.65;
+  border-top: 1px solid var(--border);
+}
+.visual-caption strong { color: var(--text) }
+
+/* ============================================================
    MOBILE OVERRIDES
    ============================================================ */
 @media(max-width:480px) {
@@ -2188,7 +2228,64 @@ function renderLearn() {
     </div>`;
   }
 
-  el.innerHTML = banner + currentDay.learn +
+  /* ── Visual diagrams ──────────────────────────────────────────
+     If the day has a visuals[] array, inject up to 2 SVG diagram
+     cards. Visual 0 is inserted after the first <h3> block in the
+     lesson HTML; visual 1 is inserted after the second <h3> block.
+     If there is no matching insertion point, both diagrams are
+     appended before the reset button.
+  ──────────────────────────────────────────────────────────────── */
+  function buildVisualCard(v, index) {
+    return `<div class="visual-card">
+      <div class="visual-card-header">
+        <span class="visual-card-label">📊 Diagram ${index + 1} — Key Concept Visual</span>
+      </div>
+      <div class="visual-svg-wrap">${v.svg}</div>
+      <div class="visual-caption">${v.caption}</div>
+    </div>`;
+  }
+
+  let learnHTML = currentDay.learn || '';
+
+  if (currentDay.visuals && currentDay.visuals.length > 0) {
+    const visuals = currentDay.visuals;
+
+    /* Find all <h3> positions in the learn HTML */
+    const h3positions = [];
+    let searchFrom = 0;
+    while (true) {
+      const idx = learnHTML.indexOf('<h3', searchFrom);
+      if (idx === -1) break;
+      /* Find the closing </h3> tag and record position right after it */
+      const closeTag = learnHTML.indexOf('</h3>', idx);
+      if (closeTag === -1) break;
+      h3positions.push(closeTag + 5); /* after </h3> */
+      searchFrom = closeTag + 5;
+    }
+
+    /* Insert visual 0 after h3 block #1 (index 1), visual 1 after h3 block #3 */
+    /* We want them between sections, not right at the start */
+    const insertPoints = [
+      h3positions[1] !== undefined ? h3positions[1] : null,
+      h3positions[3] !== undefined ? h3positions[3] : null
+    ];
+
+    /* Build cards */
+    const cards = visuals.slice(0, 2).map((v, i) => buildVisualCard(v, i));
+
+    /* Insert from LAST to FIRST so positions don't shift */
+    if (insertPoints[1] !== null && cards[1]) {
+      learnHTML = learnHTML.slice(0, insertPoints[1]) + cards[1] + learnHTML.slice(insertPoints[1]);
+    }
+    if (insertPoints[0] !== null && cards[0]) {
+      learnHTML = learnHTML.slice(0, insertPoints[0]) + cards[0] + learnHTML.slice(insertPoints[0]);
+    }
+    /* Fallback: append any card that had no insertion point */
+    if (insertPoints[0] === null && cards[0]) learnHTML += cards[0];
+    if (insertPoints[1] === null && cards[1]) learnHTML += cards[1];
+  }
+
+  el.innerHTML = banner + learnHTML +
     `<button class="reset-day-btn" onclick="resetDay(${currentDay.id})">🔄 Reset This Day's Progress</button>`;
 }
 
