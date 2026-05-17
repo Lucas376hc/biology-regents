@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
@@ -14,6 +14,8 @@
 <style>
 :root{--bg:#08091a;--surface:#0f1322;--card:#161c2e;--card2:#1c2440;--border:#252f50;--border2:#2e3a5c;--green:#0fce81;--green-dim:rgba(15,206,129,.12);--green-glow:rgba(15,206,129,.25);--cyan:#22d3ee;--blue:#3b82f6;--blue-dim:rgba(59,130,246,.12);--amber:#f59e0b;--amber-dim:rgba(245,158,11,.12);--red:#f43f5e;--red-dim:rgba(244,63,94,.12);--purple:#a855f7;--purple-dim:rgba(168,85,247,.12);--text:#e8eef8;--text2:#9aaac4;--text3:#5a6a8a;--ink:#06070f;--r:16px;--r-sm:9px;--r-xs:6px;--font:'Sora',system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono','Courier New',monospace;--shadow-sm:0 2px 8px rgba(0,0,0,.35);--shadow-md:0 6px 24px rgba(0,0,0,.45);--shadow-lg:0 16px 48px rgba(0,0,0,.55)}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{overflow-x:hidden}body{width:100%;max-width:100vw;overflow-x:hidden}
+svg{max-width:100%;height:auto;display:block}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.65}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.028'/%3E%3C/svg%3E");pointer-events:none;z-index:9998}
@@ -33,7 +35,7 @@ button{font-family:var(--font)}
 
 /* SCREEN SYSTEM */
 .screen{display:none;min-height:100vh}
-#home{display:flex;flex-direction:column}
+#home{display:flex;flex-direction:column;width:100%;max-width:100vw;overflow-x:hidden}
 #day-view,#diag-screen{display:none}
 
 /* SAFARI BANNER */
@@ -44,7 +46,7 @@ body.js-ready #safari-banner{display:none}
 body:not(.js-ready) #home{padding-top:100px}
 
 /* HOME HERO */
-.home-hero{background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(15,206,129,.18) 0%,transparent 65%),linear-gradient(180deg,#0a1028 0%,var(--bg) 100%);padding:max(56px,env(safe-area-inset-top,56px)) 20px 40px;text-align:center;position:relative;overflow:hidden}
+.home-hero{overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(15,206,129,.18) 0%,transparent 65%),linear-gradient(180deg,#0a1028 0%,var(--bg) 100%);padding:max(56px,env(safe-area-inset-top,56px)) 20px 40px;text-align:center;position:relative;overflow:hidden}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(15,206,129,.1);border:1px solid rgba(15,206,129,.3);color:var(--green);padding:6px 18px;border-radius:999px;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
 .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 .hero-title{font-size:clamp(2rem,7.5vw,3.4rem);font-weight:800;line-height:1.06;letter-spacing:-.02em;margin-bottom:14px}
@@ -71,10 +73,12 @@ body:not(.js-ready) #home{padding-top:100px}
   flex-direction:column;
   gap:10px;
   padding:8px 16px 36px;
-  max-width:600px;
+  width:100%;max-width:600px;
   margin:0 auto;
+  box-sizing:border-box;
 }
 .day-card{
+  width:100%;min-width:0;box-sizing:border-box;
   background:var(--card);border:1px solid var(--border);border-radius:var(--r);
   padding:15px 17px;cursor:pointer;
   transition:transform .18s,box-shadow .18s,border-color .18s;
@@ -88,10 +92,10 @@ body:not(.js-ready) #home{padding-top:100px}
 .day-card.done{border-color:rgba(15,206,129,.4);background:rgba(15,206,129,.06);animation:glow 3.5s ease-in-out infinite}
 .day-card.done::before{transform:scaleX(1)}
 .dc-icon-left{font-size:1.65rem;flex-shrink:0;width:46px;text-align:center;opacity:.88}
-.dc-body{flex:1;min-width:0}
+.dc-body{flex:1;min-width:0;overflow:hidden}
 .dc-num{font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
-.dc-title{font-weight:700;font-size:.9rem;line-height:1.3;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dc-meta{font-size:.7rem;color:var(--text3);margin-top:3px;font-family:var(--mono)}
+.dc-title{font-weight:700;font-size:.9rem;line-height:1.3;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.dc-meta{font-size:.7rem;color:var(--text3);margin-top:3px;font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dc-right{flex-shrink:0;display:flex;align-items:center;gap:8px}
 .done-pill{background:var(--green-dim);border:1px solid rgba(15,206,129,.3);color:var(--green);border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:800;display:none}
 .day-card.done .done-pill{display:block}
@@ -333,7 +337,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>The Carbon Cycle.</strong> Carbon moves between four spheres: atmosphere (CO₂), biosphere (living organisms), hydrosphere (oceans), and geosphere (fossil fuels, rock). Photosynthesis removes CO₂; respiration and combustion release it. Burning fossil fuels releases ancient stored carbon rapidly — the core driver of climate change.",
-    svg:`<svg viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="250" fill="#08091a" rx="10"/>
 <text x="230" y="18" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="bold" letter-spacing="1">THE CARBON CYCLE</text>
 
@@ -390,7 +394,7 @@ diagrams:[
   },
   {
     caption:"<strong>Carbon spheres &amp; key terms.</strong> The NYS Regents asks you to identify which sphere carbon moves FROM and TO in a given scenario. Memorise: geosphere = fossil fuels + rocks; hydrosphere = oceans (absorb CO₂, forming carbonic acid); biosphere = all living things; atmosphere = CO₂ + other gases. Matter cycles — energy flows.",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="18" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">CARBON SPHERES — REGENTS REFERENCE</text>
 
@@ -510,7 +514,7 @@ cluster:{
 Scientists studying the Southern Ocean discovered that adding small amounts of iron to surface waters causes massive blooms of phytoplankton — microscopic photosynthetic algae. This finding sparked debate about whether large-scale "iron fertilization" could reduce atmospheric CO₂ and slow climate change.<br><br>
 Phytoplankton are the foundation of ocean food webs and perform roughly 50% of Earth's photosynthesis. When phytoplankton die, some sink to the deep ocean floor, carrying carbon with them in a process called the <strong>biological carbon pump</strong>. In iron-rich regions (near coastlines and upwelling zones), phytoplankton populations are dense. In the open ocean, where iron is scarce, phytoplankton are sparse despite abundant sunlight and CO₂.<br><br>
 A research team conducted a controlled experiment: they added dissolved iron sulfate to a 72 km² patch of open ocean and tracked changes over 40 days.`,
-  stimulus:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="200" fill="#08091a" rx="8"/>
 <text x="230" y="16" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">IRON FERTILIZATION EXPERIMENT — RESULTS</text>
 
@@ -591,7 +595,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>The 10% Energy Rule &amp; Ecological Pyramid.</strong> Only ~10% of energy stored at one trophic level is available to the next. The other ~90% is lost as heat through cellular respiration, movement, and incomplete digestion. This is why food chains rarely exceed 4–5 levels — there is simply not enough energy to support another level. Pyramids of energy always have a wide base (producers) and narrow top (top predators).",
-    svg:`<svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="240" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">ENERGY PYRAMID — 10% RULE</text>
 
@@ -630,7 +634,7 @@ diagrams:[
   },
   {
     caption:"<strong>Food web vs food chain.</strong> A food chain shows one pathway of energy. A food web shows the realistic, interconnected feeding relationships in an ecosystem. Removing or adding one species causes a ripple effect through the entire web — this is a <strong>trophic cascade</strong>. The Regents regularly tests: 'If species X is removed, what happens to species Y?'",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">LAKE ECOSYSTEM FOOD WEB</text>
 <defs>
@@ -732,7 +736,7 @@ cluster:{
 Gray wolves (<em>Canis lupus</em>) were systematically removed from Yellowstone National Park between 1914 and 1926 through hunting and poisoning. For 70 years, the park had no wolves. In 1995, wildlife biologists reintroduced 14 wolves. By 2015, the population had grown to approximately 100 wolves across 10 packs.<br><br>
 Scientists monitoring Yellowstone documented remarkable changes after wolf reintroduction — not just in species populations, but in the physical landscape itself. Elk, the wolf's primary prey, changed their grazing behavior — avoiding areas where they were vulnerable to predation (particularly river valleys and steep slopes). This behavioral shift allowed streamside vegetation (willows, aspens, cottonwood) to recover in those areas.<br><br>
 The data below shows population changes in three species and vegetation cover from 1990 to 2010, with wolf reintroduction in 1995.`,
-  stimulus:`<svg viewBox="0 0 460 205" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 205" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="205" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">YELLOWSTONE DATA: 1990–2010 (wolf reintroduction = 1995)</text>
 
@@ -809,7 +813,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Types of ecological relationships.</strong> Organisms interact constantly — some relationships benefit both parties, some harm one, some are neutral. These interactions shape population sizes, evolutionary pressures, and ecosystem structure. The Regents tests all six relationship types and their effects on population dynamics.",
-    svg:`<svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="240" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">ECOLOGICAL RELATIONSHIPS</text>
 
@@ -855,7 +859,7 @@ diagrams:[
   },
   {
     caption:"<strong>Human impacts on biodiversity.</strong> Six major human activities drive the current mass extinction event — sometimes called the sixth mass extinction. The acronym <strong>HIPPO</strong> summarises them. Biodiversity loss reduces ecosystem stability because fewer species means fewer backup pathways for energy flow and nutrient cycling.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#f43f5e" font-size="10" font-weight="bold" letter-spacing="1">HUMAN IMPACTS — HIPPO FRAMEWORK</text>
 
@@ -995,7 +999,7 @@ cluster:{
 The red lionfish (<em>Pterois volitans</em>), native to the Pacific and Indian Oceans, was accidentally introduced to Atlantic coastal waters near Florida in the early 1980s — likely through release from private aquariums. By 2015, lionfish had spread throughout the Caribbean, Gulf of Mexico, and along the U.S. East Coast, establishing the fastest-spreading marine invasion ever recorded in the Atlantic.<br><br>
 Lionfish are voracious predators with no natural predators in Atlantic waters. They consume over 50 species of native reef fish, including species that are ecologically important for maintaining coral reef health. A single lionfish can reduce juvenile reef fish populations by 79% in just five weeks on a small section of reef. Atlantic fish have not evolved anti-predator behaviors against lionfish, making them easy prey.<br><br>
 Marine biologists set up monitored reef plots, measuring reef fish biomass (total mass of all fish) and coral cover before and after lionfish establishment. The data from two adjacent reef plots — one treated with regular lionfish removal, one left unmanaged — is shown below.`,
-  stimulus:`<svg viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="195" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">REEF MONITORING DATA — 3-YEAR STUDY</text>
 
@@ -1085,7 +1089,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>DNA structure &amp; base pairing rules.</strong> DNA is a double helix made of two antiparallel strands of nucleotides. Each nucleotide has three parts: a deoxyribose sugar, a phosphate group, and one of four nitrogenous bases. The two strands are held together by hydrogen bonds between complementary base pairs: A always pairs with T (2 hydrogen bonds); G always pairs with C (3 hydrogen bonds). This specific pairing is the key to accurate replication and information storage.",
-    svg:`<svg viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="250" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">DNA STRUCTURE &amp; BASE PAIRING</text>
 
@@ -1145,7 +1149,7 @@ diagrams:[
   },
   {
     caption:"<strong>From DNA to Protein — the Central Dogma.</strong> Genetic information flows in one direction: DNA → RNA → Protein. <strong>Transcription</strong> occurs in the nucleus: DNA is used as a template to make mRNA. <strong>Translation</strong> occurs at ribosomes in the cytoplasm: mRNA codons are read three bases at a time, each codon specifying an amino acid, building a polypeptide chain that folds into a functional protein.",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">CENTRAL DOGMA: DNA → RNA → PROTEIN</text>
 
@@ -1266,7 +1270,7 @@ cluster:{
 Sickle cell anemia is caused by a single nucleotide substitution in the gene encoding the beta-globin subunit of hemoglobin — the protein in red blood cells that carries oxygen. In the normal hemoglobin gene (HbA), the 6th codon of the beta-globin mRNA is GAG, which codes for glutamic acid (a hydrophilic amino acid). In the sickle cell variant (HbS), one nucleotide change alters this codon to GUG, which codes for valine (a hydrophobic amino acid).<br><br>
 This single amino acid change causes hemoglobin molecules to stick together under low-oxygen conditions, forming rigid rod-like structures that distort red blood cells into a characteristic sickle (crescent) shape. Sickle-shaped cells are rigid and sticky — they block small blood vessels, cause painful crises, and are destroyed more rapidly than normal cells (surviving only 10–20 days vs 120 days for normal red blood cells).<br><br>
 Despite being a serious disease when inherited from both parents (homozygous HbS/HbS), the sickle cell allele persists at high frequency — up to 30% in some sub-Saharan African populations — because heterozygous individuals (HbA/HbS) have partial protection against malaria, providing a survival advantage in malaria-endemic regions.`,
-  stimulus:`<svg viewBox="0 0 460 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="185" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">SICKLE CELL: DNA → PROTEIN → PHENOTYPE</text>
 
@@ -1329,7 +1333,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Punnett squares — monohybrid &amp; test cross.</strong> A Punnett square predicts the probability of offspring genotypes and phenotypes. Each box represents equal probability. For a Bb × Bb cross: 25% BB (dominant), 50% Bb (dominant), 25% bb (recessive) → 3:1 phenotype ratio. A test cross (unknown × homozygous recessive) reveals whether the unknown is homozygous dominant or heterozygous.",
-    svg:`<svg viewBox="0 0 460 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="245" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">PUNNETT SQUARES — MONOHYBRID CROSS</text>
 
@@ -1390,7 +1394,7 @@ diagrams:[
   },
   {
     caption:"<strong>Reading a pedigree chart.</strong> Pedigrees show inheritance patterns across generations. Squares = males; circles = females; filled = affected; half-filled = carrier (for X-linked); horizontal line = mating; vertical line = offspring. The Regents tests whether a trait is autosomal vs X-linked, and dominant vs recessive. Key rule: if two unaffected parents have an affected child → the trait is recessive.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">PEDIGREE CHART — SYMBOLS &amp; INTERPRETATION</text>
 
@@ -1538,7 +1542,7 @@ cluster:{
 Cystic fibrosis (CF) is a serious genetic disease caused by mutations in the CFTR gene on chromosome 7. The disease is autosomal recessive — a person must inherit two mutant alleles (one from each parent) to develop CF. Individuals with one normal allele and one mutant allele (carriers) are typically healthy but can pass the mutant allele to their children.<br><br>
 CF affects the protein that regulates chloride ion transport across cell membranes. Without functional CFTR protein, thick mucus accumulates in the lungs, pancreas, and other organs. This mucus traps bacteria, causing chronic lung infections that progressively damage lung tissue. CF affects approximately 1 in every 2,500 newborns of Northern European ancestry.<br><br>
 The pedigree below shows CF inheritance across three generations of a family. Let C = normal allele (dominant) and c = CF allele (recessive).`,
-  stimulus:`<svg viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="195" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">CYSTIC FIBROSIS PEDIGREE — THREE GENERATIONS</text>
 
@@ -1628,7 +1632,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Three patterns of natural selection.</strong> Natural selection can shift a population's trait distribution in three ways. <strong>Directional:</strong> one extreme is favoured (e.g. antibiotic resistance). <strong>Stabilising:</strong> the middle is favoured, reducing extremes (e.g. human birth weight). <strong>Disruptive:</strong> both extremes are favoured, splitting the population (can lead to speciation).",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">THREE TYPES OF NATURAL SELECTION</text>
 
@@ -1675,7 +1679,7 @@ diagrams:[
   },
   {
     caption:"<strong>Evidence for evolution.</strong> Multiple independent lines of evidence all point to the same conclusion: species share common ancestors and have changed over time. The Regents tests all four types of evidence — know a specific example for each.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="17" text-anchor="middle" fill="#0fce81" font-size="10" font-weight="bold" letter-spacing="1">EVIDENCE FOR EVOLUTION</text>
 
@@ -1798,7 +1802,7 @@ cluster:{
 <em>Staphylococcus aureus</em> is a bacterium commonly found on human skin. When it enters the body through wounds or medical devices, it can cause serious infections. Since the 1940s, penicillin and related antibiotics have been used to treat these infections. However, strains of <em>S. aureus</em> resistant to virtually all antibiotics — including methicillin (MRSA — methicillin-resistant <em>Staphylococcus aureus</em>) — have evolved in hospitals and communities worldwide.<br><br>
 Resistance arises from mutations in bacterial genes. A mutation in the beta-lactamase gene allows some bacteria to produce an enzyme that breaks down penicillin before it can act. In a population of one million bacteria, roughly one in every million may carry such a mutation by chance — before any antibiotic is applied. When penicillin is introduced, non-resistant bacteria die; resistant bacteria survive and reproduce. Within 24 hours (approximately 10 generations of bacterial reproduction), resistant bacteria dominate the population.<br><br>
 Researchers tracked resistance levels in a hospital population of <em>S. aureus</em> over 20 years after introducing increasing concentrations of penicillin. Their data is shown below.`,
-  stimulus:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="190" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">S. AUREUS RESISTANCE DATA — 20-YEAR STUDY</text>
 
@@ -1880,7 +1884,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Eukaryotic cell organelles &amp; functions.</strong> Each organelle performs a specific job. The Regents tests whether you know which organelle performs which function — and which organelles are found in plant cells only, animal cells only, or both. Key: chloroplasts and cell walls = plants only; centrioles = animals only; nucleus, mitochondria, ribosomes, ER, Golgi = both.",
-    svg:`<svg viewBox="0 0 460 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="245" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">EUKARYOTIC CELL — ORGANELLES &amp; FUNCTIONS</text>
 
@@ -1942,7 +1946,7 @@ diagrams:[
   },
   {
     caption:"<strong>Cell membrane transport.</strong> The cell membrane is selectively permeable — it controls what moves in and out. Three main transport types: diffusion (passive, high→low), osmosis (water through semi-permeable membrane), and active transport (requires ATP, moves against concentration gradient). Knowing which requires energy and which direction molecules move is essential for the Regents.",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">MEMBRANE TRANSPORT — THREE TYPES</text>
 
@@ -2112,7 +2116,7 @@ cluster:{
 Red blood cells (erythrocytes) are specialised cells that lack a nucleus and most organelles — they are essentially membrane-enclosed bags of hemoglobin surrounded by a plasma membrane. Because they have no cell wall (unlike plant cells), they are particularly susceptible to changes in the osmotic environment.<br><br>
 A biology student conducted an experiment placing red blood cells in three solutions of different salt (NaCl) concentrations and observed the results after 30 minutes. The student measured cell diameter before and after treatment and also observed cell shape under a microscope.<br><br>
 Blood plasma (the fluid in which red blood cells normally float) has a NaCl concentration of approximately 0.9% — the same solute concentration as the inside of red blood cells. The student used three concentrations: 0.0% NaCl (distilled water), 0.9% NaCl, and 3.0% NaCl.`,
-  stimulus:`<svg viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="195" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">RED BLOOD CELL OSMOSIS EXPERIMENT</text>
 
@@ -2188,7 +2192,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Negative feedback — the key homeostasis mechanism.</strong> Homeostasis is maintained by negative feedback loops: a change in a variable triggers a response that OPPOSES the change, returning the system to its set point. Blood glucose regulation and body temperature are the two most-tested examples. Positive feedback (rare) amplifies a change rather than opposing it.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">NEGATIVE FEEDBACK — HOMEOSTASIS</text>
 
@@ -2241,7 +2245,7 @@ diagrams:[
   },
   {
     caption:"<strong>Immune system — two lines of defence.</strong> The immune system has non-specific defences (same response to any pathogen — first and second line) and specific defences (tailored to each pathogen — third line). The specific immune response produces antibodies and memory cells. Memory cells are the basis of vaccination — they allow rapid response on re-exposure.",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">IMMUNE SYSTEM — LINES OF DEFENCE</text>
 
@@ -2364,7 +2368,7 @@ cluster:{
 Normally, blood glucose is maintained within a narrow range (approximately 70–110 mg/dL) through a negative feedback loop involving two pancreatic hormones: insulin and glucagon. After eating, blood glucose rises; the pancreas releases insulin, which signals cells to absorb glucose and signals the liver to convert glucose to glycogen. As glucose levels fall back to normal, insulin release stops.<br><br>
 In Type 1 diabetes, the immune system mistakenly attacks and destroys the insulin-producing beta cells of the pancreas. Without insulin, cells cannot absorb glucose from the blood, even when blood glucose is extremely high. The liver, receiving no insulin signal, continues releasing glucose from glycogen and even begins producing new glucose (gluconeogenesis), further raising blood glucose.<br><br>
 A researcher monitored blood glucose levels in a healthy individual and a newly diagnosed Type 1 diabetic individual over a 6-hour period that included a meal at hour 2. At hour 4, the diabetic individual received an insulin injection. The data is shown below.`,
-  stimulus:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="190" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">BLOOD GLUCOSE MONITORING — 6-HOUR STUDY</text>
 <rect x="12" y="22" width="330" height="120" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -2454,7 +2458,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Photosynthesis: two stages.</strong> Photosynthesis occurs in chloroplasts and has two stages. The <strong>light-dependent reactions</strong> (thylakoid membranes) capture light energy, split water (releasing O₂), and produce ATP and NADPH. The <strong>Calvin cycle</strong> (light-independent/stroma) uses ATP and NADPH to fix CO₂ into glucose. Both stages are needed — light reactions power the Calvin cycle.",
-    svg:`<svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="240" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">PHOTOSYNTHESIS — TWO STAGES</text>
 
@@ -2503,7 +2507,7 @@ diagrams:[
   },
   {
     caption:"<strong>Cellular respiration stages &amp; ATP yield.</strong> Cellular respiration breaks down glucose to release ATP energy. It has three stages: glycolysis (cytoplasm, no O₂ needed), Krebs cycle (mitochondrial matrix), and electron transport chain/oxidative phosphorylation (inner mitochondrial membrane). The ETC produces the most ATP. Without O₂ (anaerobic), only glycolysis runs → fermentation.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#f43f5e" font-size="9.5" font-weight="bold" letter-spacing="1">CELLULAR RESPIRATION — 3 STAGES</text>
 
@@ -2617,7 +2621,7 @@ cluster:{
 <em>Elodea</em> is a common aquatic plant used in biology labs because its photosynthesis rate can be measured by counting oxygen bubbles released from cut stems — each bubble represents O₂ produced by the light reactions. A biology class designed an experiment to investigate how light intensity and CO₂ concentration affect the rate of photosynthesis.<br><br>
 The class placed identical sprigs of <em>Elodea</em> in beakers of water at different distances from a light source (varying light intensity). They counted the number of O₂ bubbles released per minute in each condition. In a second experiment, they varied the CO₂ concentration (by adding different amounts of baking soda, which releases CO₂ in water) while keeping light intensity constant.<br><br>
 All experiments were conducted at room temperature (22°C). The results of both experiments are shown below.`,
-  stimulus:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="190" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">ELODEA PHOTOSYNTHESIS EXPERIMENT</text>
 
@@ -2701,7 +2705,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Mitosis vs Meiosis — the critical comparison.</strong> Both start with DNA replication, but produce very different outcomes. Mitosis: 1 cell → 2 identical diploid cells (growth, repair). Meiosis: 1 cell → 4 non-identical haploid cells (sex cells/gametes). The Regents heavily tests the differences — especially chromosome number, number of divisions, cell type produced, and genetic outcome.",
-    svg:`<svg viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="250" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">MITOSIS vs MEIOSIS — KEY COMPARISON</text>
 
@@ -2769,7 +2773,7 @@ diagrams:[
   },
   {
     caption:"<strong>How meiosis generates genetic variation.</strong> Meiosis produces variation through two mechanisms: (1) <strong>Crossing over</strong> (Prophase I) — homologous chromosomes exchange segments, creating new allele combinations. (2) <strong>Independent assortment</strong> — chromosome pairs align randomly at metaphase I, so each gamete gets a random mix of maternal and paternal chromosomes. With 23 pairs, this produces 2²³ = 8+ million possible chromosome combinations.",
-    svg:`<svg viewBox="0 0 460 225" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 225" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="225" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#3b82f6" font-size="9.5" font-weight="bold" letter-spacing="1">MEIOSIS — SOURCES OF GENETIC VARIATION</text>
 
@@ -2920,7 +2924,7 @@ cluster:{
 Sea urchins are widely used in developmental biology research because their eggs are large, transparent, and easy to fertilise in the laboratory. When a sea urchin egg is fertilised, the resulting zygote undergoes a series of precisely timed mitotic divisions visible under a microscope. Despite all cells in the developing embryo containing identical DNA (derived from the zygote), different cells begin expressing different genes within hours — a process called differentiation.<br><br>
 Scientists studying sea urchin development tracked two key processes: (1) the chromosome number at each stage, and (2) the activation of specific genes in different cell types. They found that by the 16-cell stage, the embryo already contained distinct cell populations with different gene expression patterns, even though all cells had identical DNA sequences.<br><br>
 Researchers also observed that when a single cell was removed from a 2-cell stage embryo and placed in a nutrient solution, it could develop into a complete, normal sea urchin — demonstrating the totipotency of early embryonic cells. By the 32-cell stage, however, isolated cells could no longer develop into complete organisms.`,
-  stimulus:`<svg viewBox="0 0 460 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="185" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">SEA URCHIN DEVELOPMENT DATA</text>
 
@@ -3005,7 +3009,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Recombinant DNA technology — gene cloning.</strong> Recombinant DNA is created by combining DNA from two different organisms. The key tools: restriction enzymes cut DNA at specific sequences (leaving 'sticky ends'), and DNA ligase seals the cuts. A target gene is cut from donor DNA and inserted into a vector (usually a plasmid) which is then introduced into a host cell (bacteria) that replicates it. This is how human insulin is produced by bacteria.",
-    svg:`<svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="240" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">RECOMBINANT DNA — GENE CLONING</text>
 
@@ -3043,7 +3047,7 @@ diagrams:[
   },
   {
     caption:"<strong>Gel electrophoresis &amp; DNA fingerprinting.</strong> Gel electrophoresis separates DNA fragments by size using an electric field. DNA is negatively charged — it migrates toward the positive pole. Smaller fragments travel farther. The pattern of bands is unique to each individual — a DNA fingerprint. Used in forensics, paternity testing, and evolutionary relationships. The Regents tests reading gel diagrams.",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">GEL ELECTROPHORESIS — DNA FINGERPRINTING</text>
 
@@ -3183,7 +3187,7 @@ cluster:{
 In 2023, the FDA approved the first CRISPR-based gene therapy for sickle cell disease — a landmark in medicine. Recall from Day 4: sickle cell disease is caused by a single nucleotide mutation in the HBB gene, which causes hemoglobin to form rigid fibers, deforming red blood cells into a sickle shape.<br><br>
 The approved therapy, called Casgevy (exa-cel), uses a different approach than directly correcting the HBB mutation. Instead, it uses CRISPR-Cas9 to reactivate a gene that is normally silenced after birth — the BCL11A gene. BCL11A normally suppresses fetal hemoglobin (HbF), a form of hemoglobin that works effectively without requiring the mutant beta-globin. By disabling BCL11A, the therapy allows red blood cells to produce fetal hemoglobin instead of sickle hemoglobin, effectively eliminating the disease symptoms.<br><br>
 In clinical trials, 28 out of 29 patients treated with Casgevy had no severe pain crises for at least 12 months. The therapy involves extracting a patient's own bone marrow stem cells, editing them with CRISPR in a laboratory, and re-infusing them into the patient after chemotherapy to clear space in the bone marrow. The edited cells then produce red blood cells with high levels of fetal hemoglobin for the patient's lifetime.`,
-  stimulus:`<svg viewBox="0 0 460 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="185" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">CASGEVY CRISPR THERAPY — CLINICAL TRIAL DATA</text>
 
@@ -3261,7 +3265,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Exponential vs logistic population growth.</strong> Exponential growth occurs when resources are unlimited — the population grows faster and faster (J-shaped curve). Logistic growth occurs when resources are limited — growth slows as the population approaches carrying capacity (K), producing an S-shaped (sigmoidal) curve. Real populations follow logistic growth. The Regents always tests reading and interpreting these curves.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">POPULATION GROWTH CURVES</text>
 
@@ -3314,7 +3318,7 @@ diagrams:[
   },
   {
     caption:"<strong>Age structure diagrams.</strong> An age structure pyramid shows the proportion of a population in each age group (pre-reproductive, reproductive, post-reproductive). The shape predicts future population growth. Wide base = many young = growing population. Narrow base = few young = declining population. Even column = stable population. These diagrams appear directly on Regents exams.",
-    svg:`<svg viewBox="0 0 460 225" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 225" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="225" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">AGE STRUCTURE DIAGRAMS</text>
 
@@ -3441,7 +3445,7 @@ cluster:{
 White-tailed deer (<em>Odocoileus virginianus</em>) populations have dramatically increased across suburban northeastern United States over the past 50 years. Historically regulated by wolves, mountain lions, and human hunting, deer now inhabit suburban landscapes where hunting is restricted and large predators are absent. Deer populations in some New York State counties have grown to densities of 40–80 deer per square mile, far exceeding the estimated ecological carrying capacity of 10–20 deer per square mile for healthy forest regeneration.<br><br>
 At high densities, deer overgraze native vegetation, preventing forest regeneration and reducing plant biodiversity. Tick populations (which use deer as primary hosts) also increase proportionally, raising Lyme disease rates in human populations. Local municipalities have responded with different management strategies: some areas use controlled hunting, others use contraceptive vaccines, and some use no intervention at all.<br><br>
 A county wildlife biologist tracked three separate suburban deer populations over 15 years: one managed with controlled hunting (Population A), one with no intervention (Population B), and one where a residential coyote population established itself naturally (Population C). The data is shown below.`,
-  stimulus:`<svg viewBox="0 0 460 188" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 188" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="188" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">SUBURBAN DEER POPULATION DATA — 15-YEAR STUDY</text>
 <rect x="12" y="22" width="300" height="125" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -3530,7 +3534,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>NYS Mandatory Labs — what the Regents tests.</strong> Five mandatory labs are required for the NYS Life Science: Biology exam. Questions on the exam reference these labs directly — you must know the purpose, key variables, and how to interpret the data from each one. The most heavily tested are Beaks of Finches, Diffusion Through a Membrane, and Relationships & Biodiversity (gel electrophoresis).",
-    svg:`<svg viewBox="0 0 460 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="245" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">NYS MANDATORY LABS — QUICK REFERENCE</text>
 
@@ -3565,7 +3569,7 @@ diagrams:[
   },
   {
     caption:"<strong>Experimental design skills — tested on every Regents.</strong> Lab-based questions require you to identify variables, draw conclusions from data, recognise errors, and propose improvements. These skills appear throughout the exam — not just in lab-specific clusters. Master these terms and you can answer almost any experimental design question.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold" letter-spacing="1">EXPERIMENTAL DESIGN — REGENTS ESSENTIALS</text>
 
@@ -3701,7 +3705,7 @@ cluster:{
 Catalase is an enzyme found in nearly all living organisms that protects cells by breaking down hydrogen peroxide (H₂O₂), a toxic by-product of cellular metabolism, into harmless water and oxygen: 2H₂O₂ → 2H₂O + O₂. The rate of this reaction can be measured by counting O₂ bubbles produced per minute.<br><br>
 A biology class designed an experiment to investigate how temperature affects catalase activity. They prepared identical pieces of fresh liver (which contains catalase) and placed each piece into hydrogen peroxide solutions maintained at different temperatures. They counted the number of O₂ bubbles produced per minute at each temperature for 3 minutes, repeating each trial 3 times and recording the average.<br><br>
 They also prepared two control conditions: (1) boiled liver (heated to 100°C for 5 minutes before testing) placed in H₂O₂ at 37°C, and (2) fresh liver placed in distilled water at 37°C. The complete results are shown below.`,
-  stimulus:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="190" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">CATALASE ENZYME ACTIVITY EXPERIMENT</text>
 
@@ -3788,7 +3792,7 @@ videos:[
 diagrams:[
   {
     caption:"<strong>Exam format &amp; time strategy.</strong> The NYS Life Science: Biology Regents consists of ~9-11 phenomenon-based clusters. Each cluster has a stimulus (graph, diagram, table, or passage) followed by 5-6 questions (mix of MC and CR). Knowing the format and how to manage time is as important as knowing the content.",
-    svg:`<svg viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="235" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">EXAM FORMAT &amp; TIME STRATEGY</text>
 
@@ -3835,7 +3839,7 @@ diagrams:[
   },
   {
     caption:"<strong>CER format for constructed response.</strong> Every written answer should follow the Claim-Evidence-Reasoning (CER) model. Graders look for three things: a direct answer to the question (claim), specific data cited as evidence, and a biological explanation connecting them (reasoning). Never leave a CR blank — partial credit is possible.",
-    svg:`<svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+    svg:`<svg width="100%" height="auto" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="230" fill="#08091a" rx="10"/>
 <text x="230" y="16" text-anchor="middle" fill="#0fce81" font-size="9.5" font-weight="bold" letter-spacing="1">CER MODEL — WRITING GREAT CR ANSWERS</text>
 
@@ -3961,7 +3965,7 @@ cluster:{
 The monarch butterfly (<em>Danaus plexippus</em>) faces a complex web of biological challenges that this final cluster uses to review concepts from across all 14 days. Monarchs migrate up to 4,500 km from eastern North America to overwintering sites in the mountains of central Mexico — one of the most remarkable biological migrations on Earth.<br><br>
 Monarch populations have declined approximately 80% since the 1990s. Researchers have identified multiple contributing factors: (1) loss of milkweed (<em>Asclepias</em> sp.) — the ONLY plant on which monarchs lay eggs and caterpillars feed — due to herbicide use in agriculture; (2) climate change disrupting migration timing and milkweed availability; (3) illegal logging destroying Mexican overwintering habitat; and (4) parasitic infection by the protozoan <em>Ophryocystis elektroscirrha</em> (OE), which weakens adult butterflies and reduces migration success.<br><br>
 Monarchs are chemically defended — they sequester toxic cardenolides from milkweed in their bodies, making them unpalatable to most predators. However, two species of birds at the Mexican overwintering sites (black-backed oriole and black-headed grosbeak) have evolved tolerance to cardenolides and prey on monarchs. The presence of these specialized predators represents a long-term coevolutionary interaction. Scientists are studying whether monarch populations can adapt quickly enough to survive the multiple simultaneous pressures they face.`,
-  stimulus:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+  stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="190" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9.5" font-weight="bold">MONARCH BUTTERFLY POPULATION &amp; THREAT DATA</text>
 
@@ -4027,7 +4031,7 @@ title:"Carbon Cycling & Ecosystems",
 phenomenon:`<strong>Peatlands as Carbon Sinks</strong><br><br>
 Peatlands are waterlogged ecosystems (bogs, fens, mires) that cover only 3% of Earth's land surface yet store approximately 30% of all soil carbon — more than all the world's forests combined. Dead plant matter in peatlands decomposes extremely slowly due to waterlogged, oxygen-poor conditions. Over thousands of years, partially decomposed organic matter accumulates as peat, locking carbon out of the atmosphere.<br><br>
 However, when peatlands are drained for agriculture or affected by drought due to climate change, aerobic decomposition accelerates dramatically. Drained peatlands switch from carbon sinks (absorbing CO₂) to carbon sources (releasing CO₂), emitting stored carbon that accumulated over millennia. Indonesia's drained peatlands currently emit 1.8 billion tonnes of CO₂ annually — comparable to Japan's entire national emissions.`,
-stimulus:`<svg viewBox="0 0 460 165" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 165" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="165" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PEATLAND CARBON FLUX DATA</text>
 <rect x="12" y="22" width="215" height="100" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -4076,7 +4080,7 @@ title:"Energy Flow & Food Webs",
 phenomenon:`<strong>The Decline of Pacific Salmon and Ecosystem Effects</strong><br><br>
 Pacific salmon spend most of their adult lives in the ocean, accumulating marine nutrients. When they return to freshwater streams to spawn and die, their decomposing bodies release marine-derived nitrogen, phosphorus, and other nutrients into stream and riparian (streamside) ecosystems. Scientists have found that in streams with high salmon runs, streamside trees grow up to three times faster than in streams without salmon — the marine nutrients transported by salmon fertilise the entire watershed.<br><br>
 Bears, eagles, wolves, ravens, and dozens of other species depend on the salmon run. Bears drag salmon carcasses up to 150 meters from streams into forests, directly depositing marine nutrients across the landscape. Studies have traced marine nitrogen (identified by its isotopic signature, ¹⁵N) in the tissues of over 50 species of plants and animals in salmon-bearing watersheds, including trees, insects, songbirds, and soil organisms. Pacific salmon populations have declined 40% since the 1980s due to overfishing, dam construction blocking spawning migration, and habitat degradation.`,
-stimulus:`<svg viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="160" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">SALMON ECOSYSTEM DATA</text>
 <rect x="12" y="22" width="215" height="95" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -4122,7 +4126,7 @@ phenomenon:`<strong>Huntington's Disease: A Dominant Neurological Disorder</stro
 Huntington's disease (HD) is a fatal neurological disorder caused by an expanded repeat of the nucleotide sequence CAG in the HTT gene on chromosome 4. Normal individuals have 10–35 CAG repeats; individuals with HD have 36 or more repeats. The extra CAG repeats cause the huntingtin protein to contain an abnormally long chain of the amino acid glutamine, causing the protein to misfold and aggregate in brain neurons, progressively destroying them.<br><br>
 HD is autosomal dominant — inheriting ONE copy of the expanded HTT gene (from either parent) is sufficient to cause the disease. Because symptoms typically do not appear until age 35–50, individuals may unknowingly pass the allele to their children before being diagnosed. Each child of an affected parent has a 50% chance of inheriting the disease allele.<br><br>
 A 45-year-old woman (Individual II-2) has just been diagnosed with Huntington's disease. The pedigree below shows her family across three generations.`,
-stimulus:`<svg viewBox="0 0 460 165" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 165" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="165" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">HUNTINGTON'S DISEASE PEDIGREE</text>
 <text x="25" y="50" fill="#5a6a8a" font-size="8" font-weight="bold">Gen I</text>
@@ -4193,7 +4197,7 @@ phenomenon:`<strong>Galápagos Finch Beak Evolution After El Niño</strong><br><
 The medium ground finch (<em>Geospiza fortis</em>) of Daphne Major Island in the Galápagos has been studied continuously since 1973 by researchers Peter and Rosemary Grant. The finch population feeds primarily on seeds. Different years have different seed availability — in drought years, small soft seeds are consumed first, leaving mainly large, hard seeds. In wet years following El Niño events, small soft seeds become abundant again.<br><br>
 In 1977, a severe drought reduced food availability dramatically. Small seeds were quickly consumed; only large, hard seeds remained. Finches with larger, deeper beaks could crack large seeds; finches with smaller beaks could not and starved. The population crashed from ~1,200 to ~180 individuals. Survivors had measurably larger beaks on average. Their offspring inherited larger beaks.<br><br>
 In 1983, an El Niño event brought unusually heavy rain, causing an explosion of plant growth and producing an abundance of small, soft seeds. The beak size distribution in the population shifted back toward smaller beaks.`,
-stimulus:`<svg viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="160" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">MEDIUM GROUND FINCH BEAK DEPTH DATA</text>
 <rect x="12" y="22" width="290" height="105" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -4242,7 +4246,7 @@ title:"Cell Biology & Homeostasis",
 phenomenon:`<strong>Cystic Fibrosis and Chloride Ion Transport</strong><br><br>
 In healthy cells, the CFTR protein functions as a chloride ion (Cl⁻) channel in the cell membrane. When CFTR opens, Cl⁻ ions move out of the cell through the channel, and water follows by osmosis. This keeps the mucus lining the lungs and other organs thin and fluid, allowing cilia to sweep pathogens away (first-line immune defense).<br><br>
 In cystic fibrosis, a mutation in the CFTR gene produces a misfolded protein that either cannot reach the membrane or cannot function as an ion channel. Without Cl⁻ transport, water stays inside cells, and the overlying mucus becomes thick and sticky. Bacteria become trapped in this thick mucus, causing chronic infections that progressively damage the lungs. CF patients must perform daily chest physiotherapy to physically dislodge thick mucus.`,
-stimulus:`<svg viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="155" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">CFTR CHLORIDE TRANSPORT — NORMAL vs CF</text>
 <rect x="12" y="22" width="210" height="100" rx="4" fill="#0a2a0a" stroke="#0fce81" stroke-width="1.2"/>
@@ -4285,7 +4289,7 @@ title:"Photosynthesis & Cellular Respiration",
 phenomenon:`<strong>Oxygen Production in a Lake — Day vs Night</strong><br><br>
 Dissolved oxygen (DO) in lakes is produced by aquatic plants and phytoplankton through photosynthesis and consumed by all organisms through cellular respiration. DO levels are measured by scientists as an indicator of ecosystem health — fish and other aquatic animals require adequate dissolved oxygen to survive.<br><br>
 A limnologist (lake scientist) installed continuous oxygen sensors in a shallow lake and recorded dissolved oxygen levels over a 48-hour period. She noticed a clear daily pattern — DO levels peaked in mid-afternoon and were lowest just before dawn. She also measured water temperature, which followed a similar daily pattern.`,
-stimulus:`<svg viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="155" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">LAKE DISSOLVED OXYGEN — 48-HOUR RECORD</text>
 <rect x="12" y="22" width="440" height="95" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -4339,7 +4343,7 @@ title:"Reproduction, Meiosis & Development",
 phenomenon:`<strong>Down Syndrome and Chromosomal Nondisjunction</strong><br><br>
 Down syndrome (Trisomy 21) is caused by the presence of an extra copy of chromosome 21 — affected individuals have 47 chromosomes instead of the normal 46. In approximately 95% of cases, the extra chromosome 21 originates from an error in meiosis called <strong>nondisjunction</strong> — when chromosome pairs fail to separate properly during Meiosis I (most common) or when sister chromatids fail to separate during Meiosis II.<br><br>
 The risk of nondisjunction increases significantly with maternal age: the frequency of Down syndrome births is approximately 1 in 1,500 at age 20, rising to 1 in 800 at age 35, and 1 in 100 at age 40. Scientists hypothesize that this age-related increase is linked to the fact that a female's oocytes (immature eggs) begin Meiosis I during fetal development but arrest (pause) at Prophase I, where they remain for decades until ovulation. The longer chromosomes are held in this arrested state, the more opportunity there is for cohesion proteins holding chromosome pairs together to degrade.`,
-stimulus:`<svg viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="155" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">NONDISJUNCTION IN MEIOSIS I — TRISOMY 21</text>
 <rect x="12" y="22" width="215" height="100" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
@@ -4382,7 +4386,7 @@ phenomenon:`<strong>Golden Rice and Vitamin A Deficiency</strong><br><br>
 Vitamin A deficiency (VAD) affects approximately 190 million children under age 5 worldwide, primarily in developing countries where diets rely heavily on white rice — a staple that provides calories but contains no beta-carotene (the precursor to vitamin A). VAD causes blindness in 250,000–500,000 children annually and increases susceptibility to infectious diseases.<br><br>
 Golden Rice is a genetically modified rice variety engineered to produce beta-carotene in the rice endosperm (the edible grain), giving it a distinctive golden colour. Two genes were inserted using recombinant DNA technology: one from maize (Zea mays) and one from a soil bacterium, Pantoea ananatis. Normal white rice has these biochemical pathways but they are turned off in the endosperm. The inserted genes, with appropriate promoters, turn on beta-carotene synthesis specifically in the grain.<br><br>
 A clinical trial in the Philippines provided Golden Rice, white rice, or spinach (positive control) to groups of children aged 6-8 and measured beta-carotene absorption and conversion to vitamin A over 3 weeks. Results showed Golden Rice was as effective as spinach at providing vitamin A to children. Despite this, adoption of Golden Rice has been slow due to regulatory concerns, public opposition to GMOs, and the destruction of Golden Rice field trials by protestors.`,
-stimulus:`<svg viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+stimulus:`<svg width="100%" height="auto" viewBox="0 0 460 155" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
 <rect width="460" height="155" fill="#08091a" rx="8"/>
 <text x="230" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">GOLDEN RICE CLINICAL TRIAL DATA</text>
 <rect x="12" y="22" width="270" height="100" rx="4" fill="#0f1322" stroke="#252f50" stroke-width="1"/>
